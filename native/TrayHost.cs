@@ -106,6 +106,13 @@ class TrayHost : ApplicationContext {
             }
         };
         menu.Items.Add("存档目录",null,delegate { Process.Start("explorer.exe",data); });
+        menu.Items.Add("官网",null,delegate {
+            try {
+                Process.Start(new ProcessStartInfo("https://www.gongjudengta.top/article/224") { UseShellExecute=true });
+            } catch(Exception) {
+                tray.ShowBalloonTip(5000,"无法打开官网","请使用浏览器访问：https://www.gongjudengta.top/article/224",ToolTipIcon.Warning);
+            }
+        });
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add("保存并退出",null,delegate { quitting=true; BeginStop(); });
         tray.ContextMenuStrip=menu;
