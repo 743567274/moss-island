@@ -1,0 +1,23 @@
+County location data attribution
+
+AreaCity-JsSpider-StatsGov, release 2025.251231.260403 (2026-04-03)
+Copyright (c) 2019 xiangyuecn. MIT license, see AreaCity-MIT.txt.
+https://github.com/xiangyuecn/AreaCity-JsSpider-StatsGov
+
+Taiwan township polygons: Taiwan-GeoJSON by titaneric, sourced from
+Ministry of the Interior administrative boundary data.
+https://github.com/titaneric/Taiwan-GeoJSON
+Government open data source and terms:
+https://data.gov.tw/dataset/7441
+The mirror repository does not provide an explicit standalone license.
+
+Supplementary Hekang, He'an and Cenling county boundaries:
+Copyright OpenStreetMap contributors; Open Database License (ODbL) 1.0.
+https://www.openstreetmap.org/copyright
+https://opendatacommons.org/licenses/odbl/1-0/
+Retrieved through Nominatim on 2026-10-21; corresponding static source
+queries and derived-file hashes are recorded in data/regions-source.json.
+
+Coordinate normalization, binary indexing and local lookup code were
+implemented in this project. These geographic facts are provided as a
+versioned snapshot, not as an assertion of perpetual administrative currency.

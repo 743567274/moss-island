@@ -1,0 +1,128 @@
+{
+	"payload": {
+		"version": 4,
+		"id": "1792500000-3888392492",
+		"created_at": 1792500000.0,
+		"last_tick": 1792500000.0,
+		"updated_at": 1792500000.0,
+		"rate": 1.0,
+		"paused": false,
+		"offline_cap_days": 30,
+		"harvested": 0,
+		"plots": [
+			{
+				"id": 0,
+				"crop": "carrot",
+				"growth": 7200.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 1,
+				"crop": "cabbage",
+				"growth": 7920.000000000001,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 2,
+				"crop": "wheat",
+				"growth": 8640.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 3,
+				"crop": "corn",
+				"growth": 60479.99999999999,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 4,
+				"crop": "pumpkin",
+				"growth": 58320.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 5,
+				"crop": "tomato",
+				"growth": 19440.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 6,
+				"crop": "rice",
+				"growth": 64800.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 7,
+				"crop": "eggplant",
+				"growth": 46080.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 8,
+				"crop": "",
+				"growth": 0.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 9,
+				"crop": "",
+				"growth": 0.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 10,
+				"crop": "",
+				"growth": 0.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			},
+			{
+				"id": 11,
+				"crop": "",
+				"growth": 0.0,
+				"age": 0.0,
+				"stress": 0.0,
+				"health": "healthy"
+			}
+		],
+		"decorations": [],
+		"collection": {
+			"crops": {
+
+			},
+			"discovered": [
+				"carrot",
+				"cabbage",
+				"wheat",
+				"corn",
+				"pumpkin",
+				"tomato",
+				"rice",
+				"eggplant"
+			]
+		}
+	},
+	"sha256": "5f36285396a6c860f2f812a18fce7eb1cc0245ab28f097828721f059ee4f0ba9"
+}

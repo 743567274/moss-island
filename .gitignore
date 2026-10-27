@@ -1,0 +1,36 @@
+# Godot / local dependencies
+.godot/
+tools/
+build/
+dist/
+.release-backups/
+# Legacy reference assets without redistribution permission
+assets/reference/
+# Generated crop byte copies (recreated by dev/build.ps1)
+data/crops/*/raw/
+# Local binaries and caches
+native/*.exe
+__pycache__/
+*.pyc
+*.tmp
+*.log
+*.bak
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+# Credentials / local export secrets
+.env
+.env.*
+!.env.example
+export_credentials.cfg
+*.pfx
+*.p12
+*.key
+# Personal runtime state
+initial-data/
+user-data/
+userdata/
+# Historical local development reports (not user documentation)
+docs/VALIDATION-*.md
+docs/MEMORY-OPTIMIZATION-*.md

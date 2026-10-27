@@ -1,0 +1,122 @@
+{
+  "design_only": true,
+  "schema_version": 2,
+  "map_id": "example-lakeside-layout-v2",
+  "name": "湖畔农场设计示例",
+  "design_size": [1920, 1080],
+  "fit_mode": "cover",
+  "background_color": "91b27b",
+  "asset_catalog": "assets.json",
+  "objects": [
+    {
+      "object_id": "background-day",
+      "kind": "background",
+      "asset_id": "lakeside-background",
+      "position_px": [960, 540],
+      "uniform_scale": 1.0,
+      "layer": 0,
+      "visible": true,
+      "locked": true,
+      "animation": {"type": "static", "enabled": false}
+    },
+    {
+      "object_id": "field-object-001",
+      "kind": "plot",
+      "plot_id": "plot-legacy-000",
+      "name": "房屋前一号田",
+      "asset_id": "square-soil",
+      "position_px": [422.4, 730.08],
+      "uniform_scale": 1.0,
+      "layer": 40,
+      "visible": true,
+      "locked": false,
+      "footprint": {
+        "shape": "isometric_square",
+        "display_size_px": [142.46, 81.41],
+        "lock_ratio": true,
+        "polygon_uv": [[0.5, 0], [1, 0.5], [0.5, 1], [0, 0.5]]
+      },
+      "planting_anchor_uv": [0.5, 0.5],
+      "crop_scale_policy": "follow_plot",
+      "crop_scale_multiplier": 1.0,
+      "plants_per_plot": 1,
+      "interaction": {"type": "plantable", "hit_region": "footprint"},
+      "animation": {"type": "static", "enabled": false}
+    },
+    {
+      "object_id": "riverside-willow",
+      "kind": "vegetation",
+      "asset_id": "watercolor-willow",
+      "position_px": [969.6, 555.12],
+      "uniform_scale": 1.0,
+      "layer": 35,
+      "visible": true,
+      "locked": false,
+      "animation": {
+        "type": "foliage_wind",
+        "enabled": true,
+        "strength": 0.004,
+        "wind_response": 6.0,
+        "fixed_anchor": "asset_anchor",
+        "mask": "masks/willow-foliage.png"
+      },
+      "interaction": {"type": "decoration", "capture_pointer": false}
+    },
+    {
+      "object_id": "pavilion-light",
+      "kind": "light",
+      "parent_object_id": "pavilion-object",
+      "local_position_px": [0, -28],
+      "layer": 55,
+      "visible": true,
+      "color": "ffd08a",
+      "radius_px": [27, 28],
+      "energy": 0.3,
+      "activation": "night",
+      "animation": {"type": "light_flicker", "enabled": true, "strength": 0.02}
+    },
+    {
+      "object_id": "pavilion-object",
+      "kind": "building",
+      "asset_id": "pavilion",
+      "position_px": [1672, 660],
+      "uniform_scale": 1.0,
+      "layer": 35,
+      "visible": true,
+      "locked": false,
+      "animation": {"type": "static", "enabled": false}
+    }
+  ],
+  "water_regions": [
+    {
+      "water_id": "main-river",
+      "mask": "masks/main-river.png",
+      "flow_direction": [0.2, 1.0],
+      "flow_speed": 0.6,
+      "wind_response": 1.0,
+      "ripple_region": "water_mask"
+    }
+  ],
+  "asset_examples": {
+    "square-soil": {
+      "category": "plot",
+      "file": "assets/soil-atlas.png",
+      "region": [0.0143, 0.375, 0.4688, 0.2682],
+      "selected_region": [0.5195, 0.3743, 0.4648, 0.2689],
+      "anchor": [0.5, 0.5],
+      "default_display_size_px": [142.46, 81.41]
+    },
+    "watercolor-willow": {
+      "category": "vegetation",
+      "file": "assets/willow.png",
+      "region": [0, 0, 1, 1],
+      "anchor": [0.47, 0.985],
+      "default_display_size_px": [250, 264]
+    }
+  },
+  "notes": [
+    "这是字段关系示例，素材目录、遮罩和引用对象需要在真正创建地图包时补全。",
+    "生产地图的素材定义放在独立assets.json；此处asset_examples仅用于说明。",
+    "本示例不包含真实作物状态、库存、定位或天气缓存，不应直接作为现有地图加载。"
+  ]
+}

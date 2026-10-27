@@ -1,0 +1,212 @@
+{
+  "version": "2.5.0",
+  "snapshot": "2026-10-21",
+  "provinces": 34,
+  "cities": 392,
+  "counties": 3212,
+  "sources": [
+    {
+      "url": "https://github.com/xiangyuecn/AreaCity-JsSpider-StatsGov/releases/tag/2025.251231.260403",
+      "license": "MIT"
+    },
+    {
+      "url": "https://github.com/titaneric/Taiwan-GeoJSON",
+      "origin": "https://data.gov.tw/dataset/7441"
+    },
+    {
+      "url": "https://nominatim.openstreetmap.org/search?format=jsonv2&polygon_geojson=1&q=%E5%92%8C%E5%BA%B7%E5%8E%BF",
+      "county_code": "653228",
+      "license": "ODbL-1.0"
+    },
+    {
+      "url": "https://nominatim.openstreetmap.org/search?format=jsonv2&polygon_geojson=1&q=%E5%92%8C%E5%AE%89%E5%8E%BF",
+      "county_code": "653229",
+      "license": "ODbL-1.0"
+    },
+    {
+      "url": "https://nominatim.openstreetmap.org/search?format=jsonv2&polygon_geojson=1&q=%E5%B2%91%E5%B2%AD%E5%8E%BF",
+      "county_code": "653132",
+      "license": "ODbL-1.0"
+    }
+  ],
+  "boundary_crs": "GCJ-02",
+  "weather_crs": "WGS84",
+  "simplification_degrees": 6e-05,
+  "files": [
+    {
+      "path": "data/china_regions.json",
+      "bytes": 662263,
+      "sha256": "c1f9b6f572e710fa1560748dab9fb3f06fd2fa32ad0aa4a1ef6ac7004d139c4e"
+    },
+    {
+      "path": "data/regions/11.bin",
+      "bytes": 214040,
+      "sha256": "4c9b879f39dd999a8b5c86e9788ebc6d47611a63801de1c3555c09f85a461ebe"
+    },
+    {
+      "path": "data/regions/12.bin",
+      "bytes": 84896,
+      "sha256": "16cdee97fc392d4ed8b63ed005684ab089262dd1ebd218a7583726c8ca9850ad"
+    },
+    {
+      "path": "data/regions/13.bin",
+      "bytes": 944816,
+      "sha256": "625240a5c054ef44b26723b1b928d3a13570b0e32fe7200d3601a604d7639861"
+    },
+    {
+      "path": "data/regions/14.bin",
+      "bytes": 461120,
+      "sha256": "333481a585c59c0e7d2cc5a54652c97624b82697caf138203171ffad2b60bf5c"
+    },
+    {
+      "path": "data/regions/15.bin",
+      "bytes": 1220792,
+      "sha256": "72375fa26bad1b6afcc67de430d472f7c77aba17304bd8f1a29979e672321377"
+    },
+    {
+      "path": "data/regions/21.bin",
+      "bytes": 1063280,
+      "sha256": "de8b17e2a52d84df2451ca8ef65a7fcdce3965a20affd02faccd8ed21c83c5a9"
+    },
+    {
+      "path": "data/regions/22.bin",
+      "bytes": 1152932,
+      "sha256": "fce179b646e2ab13807457020b20482c40b7d681d19b0eec7c9079c00fe5ede0"
+    },
+    {
+      "path": "data/regions/23.bin",
+      "bytes": 2042244,
+      "sha256": "55d4d38e3577ae2585cba207254eb98f1f2b24e6434fa2efeec64cd08d0ee5fc"
+    },
+    {
+      "path": "data/regions/31.bin",
+      "bytes": 76604,
+      "sha256": "bf3c590e89c6cb0fe6f992ad93ed351c6a0a69fa777b71f4312ae5fa4b25443a"
+    },
+    {
+      "path": "data/regions/32.bin",
+      "bytes": 614308,
+      "sha256": "bb8e74a0ae1d6e493ba6fd2b22d196d20a12a5da09d4bf6b69c084ba6bdd98e4"
+    },
+    {
+      "path": "data/regions/33.bin",
+      "bytes": 881228,
+      "sha256": "cd3397ea02c88a0766021ac083057ad416ec8c8eff1c48022ea619328c0ff9f9"
+    },
+    {
+      "path": "data/regions/34.bin",
+      "bytes": 617128,
+      "sha256": "af631d5fa38e3c1fc7565dfeefa15b366af2d1083b920f0e9fcbb42eae77e79a"
+    },
+    {
+      "path": "data/regions/35.bin",
+      "bytes": 1507856,
+      "sha256": "1544e7050b1decefd6047bc58d5bd0e229f48c5ca6de6361eabfdfa831a2f7ff"
+    },
+    {
+      "path": "data/regions/36.bin",
+      "bytes": 1975732,
+      "sha256": "88d527bf2701ac9ac44432a0a58404c97013675f5b5f7de250ba9157eff09867"
+    },
+    {
+      "path": "data/regions/37.bin",
+      "bytes": 829036,
+      "sha256": "15192b6e361aceb2c5b19f682f975c746fc6d45f9441fd388f5d9dc41aeafe28"
+    },
+    {
+      "path": "data/regions/41.bin",
+      "bytes": 1574004,
+      "sha256": "f1b5d8809eb1f996184a4feb26d5b96ce30a504ba8fc9d238ae3dfa98b9907b6"
+    },
+    {
+      "path": "data/regions/42.bin",
+      "bytes": 701084,
+      "sha256": "ca233e1620ea0bbee29669ae017d482306da7fd109571a8fd52498d63307328a"
+    },
+    {
+      "path": "data/regions/43.bin",
+      "bytes": 897636,
+      "sha256": "2841bc61cc3a01a0c35d603c4df0fb8d38ae75df96f9be75bc3b37bfdda44f29"
+    },
+    {
+      "path": "data/regions/44.bin",
+      "bytes": 1194436,
+      "sha256": "8920312974552fc8a9340d63f2830b6309fa9cbe2797e745074bd58653e6a96c"
+    },
+    {
+      "path": "data/regions/45.bin",
+      "bytes": 936396,
+      "sha256": "caa450afeb82bccbd71442220338e236801a1bd0dab65300bf94f09680376723"
+    },
+    {
+      "path": "data/regions/46.bin",
+      "bytes": 171972,
+      "sha256": "8fb0e5650830fc4a5adbfc5a1eca18cbda981028375999a0f5143cb0dd3b94f0"
+    },
+    {
+      "path": "data/regions/50.bin",
+      "bytes": 473648,
+      "sha256": "9bf1ed1fe197ff26e37361eded32c3b88fd7fa6cf586cd2f6f7ebdb589af1551"
+    },
+    {
+      "path": "data/regions/51.bin",
+      "bytes": 1832612,
+      "sha256": "29e3a66a1c57c48285c86385e241cbab71407d04c2f1f10d37c9854ddb72d481"
+    },
+    {
+      "path": "data/regions/52.bin",
+      "bytes": 716076,
+      "sha256": "ff7fd4cc82e92086c775daf75c31fbf11301e630dd46755e107341e478d4e2db"
+    },
+    {
+      "path": "data/regions/53.bin",
+      "bytes": 1348540,
+      "sha256": "3944dc0916b3abbea56081b6afa5d1cb767a40f874f81193a946d376ed69c6b8"
+    },
+    {
+      "path": "data/regions/54.bin",
+      "bytes": 826528,
+      "sha256": "3c2996a1d99b14505e2d76fd670b84e5036086947164d7af1e3d5b59d0ddd5c1"
+    },
+    {
+      "path": "data/regions/61.bin",
+      "bytes": 2053596,
+      "sha256": "068df67b8907cc4716d1a8db619650cef5e3f6dbdab66b5f8c8b8d4158b179ad"
+    },
+    {
+      "path": "data/regions/62.bin",
+      "bytes": 1739696,
+      "sha256": "3e8b555919044c9c270b043a4c1e85ffd8edeab711aa7be75656bcad93e36d1a"
+    },
+    {
+      "path": "data/regions/63.bin",
+      "bytes": 772692,
+      "sha256": "2f3a3669f13053d32309761397f96963f6d8b3d214557cae1cf2361c5f8fdf23"
+    },
+    {
+      "path": "data/regions/64.bin",
+      "bytes": 172056,
+      "sha256": "8a9b846d526aaf8b44d5f30b5ece49aff256a650db1c43e3c0d23c445d543feb"
+    },
+    {
+      "path": "data/regions/65.bin",
+      "bytes": 1802152,
+      "sha256": "9fbeffba245dc5cc308ec37985adc09844eb0d4d9e60048cdc7f0b195a51af5b"
+    },
+    {
+      "path": "data/regions/71.bin",
+      "bytes": 1461500,
+      "sha256": "9072b54d8a34a27e98ca66f10c3c36f673e107e867bda1db823c63bd729a01a1"
+    },
+    {
+      "path": "data/regions/81.bin",
+      "bytes": 44392,
+      "sha256": "b885ace013cd342bd93d9a968d1ffe6ff04619ebd636efaa67164197e1b1bf41"
+    },
+    {
+      "path": "data/regions/82.bin",
+      "bytes": 544,
+      "sha256": "32d59acc69bead649cc32afde5d73e3d197f0d46af9361e1dd293a3c9b45e59b"
+    }
+  ]
+}

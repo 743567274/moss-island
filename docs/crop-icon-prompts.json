@@ -1,0 +1,35 @@
+[
+  {
+    "id": "wheat",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset type: small inventory item icon for a Chinese pastoral hand-painted farming game. Subject: a small tied sheaf of three ripe golden wheat ears, short stems and two narrow green leaves. Style: delicate dark brown ink contours, watercolor and colored pencil shading, hand-painted botanical game sprite, warm natural colors. Center one compact isolated harvest item, fully inside square frame with 12% clear margins, readable at 48px. Genuine transparent background. No soil, pot, frame, badge, text, watermark, pale outline, white halo, or cast shadow. Do not draw the whole growing plant.",
+    "saved_paths": [
+      "data/crops/wheat_spring/icon.png",
+      "data/crops/wheat_winter/icon.png"
+    ]
+  },
+  {
+    "id": "pepper",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset type: small inventory item icon for a Chinese pastoral hand-painted farming game. Subject: two curved ripe red chili peppers with fresh green stems. Style: delicate dark brown ink contours, watercolor and colored pencil shading, hand-painted botanical game sprite, warm natural colors. Center one compact isolated harvest item, fully inside square frame with 12% clear margins, readable at 48px. Genuine transparent background. No soil, pot, frame, badge, text, watermark, pale outline, white halo, or cast shadow. Do not draw the whole growing plant.",
+    "saved_paths": [
+      "data/crops/pepper/icon.png"
+    ]
+  },
+  {
+    "id": "tomato",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset type: small inventory item icon for a Chinese pastoral hand-painted farming game. Subject: two ripe round red tomatoes, green star-shaped calyx, one small green leaf. Style: delicate dark brown ink contours, watercolor and colored pencil shading, hand-painted botanical game sprite, warm natural colors. Center one compact isolated harvest item, fully inside square frame with 12% clear margins, readable at 48px. Genuine transparent background. No soil, pot, frame, badge, text, watermark, pale outline, white halo, or cast shadow. Do not draw the whole growing plant.",
+    "saved_paths": [
+      "data/crops/tomato/icon.png"
+    ]
+  },
+  {
+    "id": "tobacco",
+    "mode": "built-in image_gen",
+    "prompt": "Use case: stylized-concept. Asset type: small inventory item icon for a Chinese pastoral hand-painted farming game. Subject: three broad fresh green tobacco leaves with prominent natural veins, a tiny warm ochre accent. Style: delicate dark brown ink contours, watercolor and colored pencil shading, hand-painted botanical game sprite, warm natural colors. Center one compact isolated harvest item, fully inside square frame with 12% clear margins, readable at 48px. Genuine transparent background. No soil, pot, frame, badge, text, watermark, pale outline, white halo, or cast shadow. Do not draw the whole growing plant.",
+    "saved_paths": [
+      "data/crops/tobacco/icon.png"
+    ]
+  }
+]

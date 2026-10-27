@@ -1,0 +1,73 @@
+{
+  "projection": "Original illustration with editable crop and orchard layers",
+  "assets": [
+    {
+      "file": "modular-meadow.png",
+      "source": "imagegen edit of empty-garden.png: remove baked soil beds and raised planter; retain house, river, willow, bridges, pavilion and scenery",
+      "sha256": "3a170c352211e4bd1d28ba606d8895437306802b93326bf359ea1726628c2598",
+      "bytes": 2676705,
+      "max_import_edge": 2048,
+      "prompt_record": "docs/ASSET-GENERATION-v230.md"
+    },
+    {
+      "file": "reference.png",
+      "source": "User supplied reference, 2026-10-21; original file retained",
+      "sha256": "d64174b619f6bc7c9cc4182086c5e13dce8defa9b1941a55618132ca40d26adb",
+      "bytes": 4637625,
+      "max_import_edge": 2048
+    },
+    {
+      "file": "empty-garden.png",
+      "source": "imagegen edit/sprites derived from user reference",
+      "sha256": "461631cf00029aef9cc9c4e6a0889260f2e9e9fd1a2d65be9e07a8e80fb79bca",
+      "bytes": 2827361,
+      "max_import_edge": 2048
+    },
+    {
+      "file": "tree-stages.png",
+      "source": "imagegen edit/sprites derived from user reference",
+      "sha256": "5cf7b32893bf7e250bf11d0d649c5add1cfd70451673c7281b51229cf0336cd7",
+      "bytes": 1669237,
+      "max_import_edge": 2048
+    },
+    {
+      "file": "crops.png",
+      "source": "imagegen edit/sprites derived from user reference",
+      "sha256": "d4fff108581e6ab199dc79767c36d7ae035f359edc2eca1339c6f1ce7deeb3cf",
+      "bytes": 2518080,
+      "max_import_edge": 2048
+    },
+    {
+      "source": "imagegen foreground cutout derived from empty garden; used only by companion mode",
+      "sha256": "a0d6bab72a090937db9e07985922c115823a147f568d63d103e4aeb2a6b8cf0e",
+      "bytes": 1888029,
+      "file": "companion-garden.png",
+      "max_import_edge": 2048
+    },
+    {
+      "file": "soil-normal.png",
+      "source": "imagegen transparent extraction of user-provided farmland PNG",
+      "sha256": "40fce8d01fb24b5a60f4957b1e85d0b507b05894129481996ccbc6f1773b438e",
+      "bytes": 1350622,
+      "max_import_edge": 1024,
+      "prompt_record": "docs/ASSET-GENERATION-v240.md"
+    },
+    {
+      "file": "soil-selected.png",
+      "source": "imagegen transparent extraction of user-provided farmland PNG",
+      "sha256": "39f58813706d55c23ea0f1254bbc98bd51495fe90d3be9f3e3b5991ee92ed476",
+      "bytes": 1404491,
+      "max_import_edge": 1024,
+      "prompt_record": "docs/ASSET-GENERATION-v240.md"
+    },
+    {
+      "file": "moonlit-meadow.png",
+      "source": "imagegen lighting edit of modular-meadow.png",
+      "sha256": "afdb0e9ae3e9565d741e2a15dc9812c2cf7214ee357d12040572940e4ede5989",
+      "bytes": 2627659,
+      "max_import_edge": 2048,
+      "prompt_record": "docs/ASSET-GENERATION-v240.md"
+    }
+  ],
+  "version": "2.4.0"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "crop_packages": [
+    "res://data/crops/corn/crop.json",
+    "res://data/crops/cotton/crop.json",
+    "res://data/crops/wheat_spring/crop.json",
+    "res://data/crops/wheat_winter/crop.json",
+    "res://data/crops/pepper/crop.json",
+    "res://data/crops/tomato/crop.json",
+    "res://data/crops/tobacco/crop.json",
+    "res://data/crops/rose/crop.json"
+  ]
+}

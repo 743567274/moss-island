@@ -1,0 +1,77 @@
+{
+  "scope": "仅作物JSON参数，不修改编辑器/生长程序",
+  "changes": [
+    {
+      "id": "corn",
+      "before_days": 120.0,
+      "after_days": 130.0,
+      "initial_water_mm": 24.0,
+      "seasonal_reference_water_mm": 570.5,
+      "yield": 1,
+      "unit": "穗"
+    },
+    {
+      "id": "cotton",
+      "before_days": 160.0,
+      "after_days": 160.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 578.4,
+      "yield": 4,
+      "unit": "份"
+    },
+    {
+      "id": "pepper",
+      "before_days": 150.0,
+      "after_days": 150.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 448.8,
+      "yield": 16,
+      "unit": "个"
+    },
+    {
+      "id": "tomato",
+      "before_days": 130.0,
+      "after_days": 150.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 517.4,
+      "yield": 16,
+      "unit": "个"
+    },
+    {
+      "id": "tobacco",
+      "before_days": 180.0,
+      "after_days": 180.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 509.3,
+      "yield": 24,
+      "unit": "片"
+    },
+    {
+      "id": "wheat_spring",
+      "before_days": 120.0,
+      "after_days": 120.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 453.4,
+      "yield": 4,
+      "unit": "份"
+    },
+    {
+      "id": "wheat_winter",
+      "before_days": 250.0,
+      "after_days": 250.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 469.5,
+      "yield": 4,
+      "unit": "份"
+    },
+    {
+      "id": "rose",
+      "before_days": 120.0,
+      "after_days": 120.0,
+      "initial_water_mm": 27.0,
+      "seasonal_reference_water_mm": 242,
+      "yield": 4,
+      "unit": "朵"
+    }
+  ]
+}

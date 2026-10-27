@@ -1,0 +1,118 @@
+{
+	"payload": {
+		"version": 2,
+		"id": "moss-island-example-v2",
+		"created_at": 1792454400.0,
+		"last_tick": 1792454400.0,
+		"updated_at": 1792454400.0,
+		"rate": 1.0,
+		"paused": false,
+		"harvested": 0,
+		"plots": [
+			{
+				"id": 0,
+				"crop": "carrot",
+				"growth": 7200.0
+			},
+			{
+				"id": 1,
+				"crop": "cabbage",
+				"growth": 7920.000000000001
+			},
+			{
+				"id": 2,
+				"crop": "wheat",
+				"growth": 7200.0
+			},
+			{
+				"id": 3,
+				"crop": "carrot",
+				"growth": 7200.0
+			},
+			{
+				"id": 4,
+				"crop": "cabbage",
+				"growth": 7920.000000000001
+			},
+			{
+				"id": 5,
+				"crop": "wheat",
+				"growth": 7200.0
+			},
+			{
+				"id": 6,
+				"crop": "",
+				"growth": 0.0
+			},
+			{
+				"id": 7,
+				"crop": "",
+				"growth": 0.0
+			},
+			{
+				"id": 8,
+				"crop": "",
+				"growth": 0.0
+			},
+			{
+				"id": 9,
+				"crop": "",
+				"growth": 0.0
+			},
+			{
+				"id": 10,
+				"crop": "",
+				"growth": 0.0
+			},
+			{
+				"id": 11,
+				"crop": "",
+				"growth": 0.0
+			}
+		],
+		"creatures": [
+			{
+				"id": 0,
+				"kind": "sheep",
+				"growth": 86400.0
+			},
+			{
+				"id": 1,
+				"kind": "sheep",
+				"growth": 86400.0
+			},
+			{
+				"id": 2,
+				"kind": "cow",
+				"growth": 86400.0
+			},
+			{
+				"id": 3,
+				"kind": "chicken",
+				"growth": 86400.0
+			},
+			{
+				"id": 4,
+				"kind": "chicken",
+				"growth": 86400.0
+			},
+			{
+				"id": 5,
+				"kind": "koi",
+				"growth": 86400.0
+			},
+			{
+				"id": 6,
+				"kind": "koi",
+				"growth": 86400.0
+			},
+			{
+				"id": 7,
+				"kind": "goldfish",
+				"growth": 86400.0
+			}
+		],
+		"decorations": []
+	},
+	"sha256": "022125c44809c282bff160826b64416a51762b05c42e1efd9403a2d3656fbef8"
+}

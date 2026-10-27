@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "id": "corn",
+  "name": "玉米",
+  "version": "1.2.0",
+  "description": "中熟籽粒玉米，播种至籽粒集中成熟参考130天；并非甜玉米鲜穗的首次采摘日。单株参考1个主要果穗，未模拟受精和果穗大小。",
+  "clock": "real",
+  "duration": 11232000,
+  "color": "e7ba4a",
+  "model": "corn",
+  "stages": [
+    {
+      "id": "seed",
+      "name": "种子",
+      "seconds": 604800,
+      "sprite": "seed",
+      "dry_sprite": "seed",
+      "dead_sprite": "seed_dead",
+      "height": 0.3,
+      "water_mm_per_day": 1.5,
+      "drought_death_seconds": 259200,
+      "harvestable": false
+    },
+    {
+      "id": "seedling",
+      "name": "幼苗",
+      "seconds": 1555200,
+      "sprite": "seedling",
+      "dry_sprite": "seedling_dry",
+      "dead_sprite": "seedling_dead",
+      "height": 0.62,
+      "water_mm_per_day": 2.5,
+      "drought_death_seconds": 432000,
+      "harvestable": false
+    },
+    {
+      "id": "juvenile",
+      "name": "半成熟",
+      "seconds": 2160000,
+      "sprite": "juvenile",
+      "dry_sprite": "adult_dry",
+      "dead_sprite": "adult_dead",
+      "height": 0.95,
+      "water_mm_per_day": 3.5,
+      "drought_death_seconds": 604800,
+      "harvestable": false
+    },
+    {
+      "id": "adult",
+      "name": "长大",
+      "seconds": 2160000,
+      "sprite": "adult",
+      "dry_sprite": "adult_dry",
+      "dead_sprite": "adult_dead",
+      "height": 1.25,
+      "water_mm_per_day": 5,
+      "drought_death_seconds": 604800,
+      "harvestable": false
+    },
+    {
+      "id": "fruiting",
+      "name": "结果",
+      "seconds": 4752000,
+      "sprite": "fruiting",
+      "dry_sprite": "adult_dry",
+      "dead_sprite": "adult_dead",
+      "height": 1.4,
+      "water_mm_per_day": 5.5,
+      "drought_death_seconds": 604800,
+      "harvestable": false
+    },
+    {
+      "id": "mature",
+      "name": "成熟",
+      "seconds": 0,
+      "sprite": "mature",
+      "dry_sprite": "mature",
+      "dead_sprite": "residue",
+      "height": 1.4,
+      "water_mm_per_day": 0,
+      "drought_death_seconds": 0,
+      "harvestable": true
+    }
+  ],
+  "assets": {
+    "seed": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.044921875,
+        0.20572916666666666,
+        0.13720703125,
+        0.1440972222222222
+      ]
+    },
+    "seed_dead": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.24853515625,
+        0.21354166666666666,
+        0.13818359375,
+        0.13368055555555555
+      ]
+    },
+    "seedling": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.466796875,
+        0.1545138888888889,
+        0.08740234375,
+        0.2152777777777778
+      ]
+    },
+    "seedling_dry": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.65234375,
+        0.1345486111111111,
+        0.1171875,
+        0.2465277777777778
+      ]
+    },
+    "seedling_dead": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.84521484375,
+        0.11024305555555555,
+        0.1171875,
+        0.2673611111111111
+      ]
+    },
+    "juvenile": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.02783203125,
+        0.4522569444444444,
+        0.1396484375,
+        0.4331597222222222
+      ]
+    },
+    "adult_dry": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.197265625,
+        0.4878472222222222,
+        0.13232421875,
+        0.3967013888888889
+      ]
+    },
+    "adult_dead": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.36083984375,
+        0.4791666666666667,
+        0.1337890625,
+        0.4036458333333333
+      ]
+    },
+    "mature": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.52197265625,
+        0.4522569444444444,
+        0.1396484375,
+        0.4314236111111111
+      ]
+    },
+    "picked": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.69775390625,
+        0.4861111111111111,
+        0.1064453125,
+        0.4001736111111111
+      ]
+    },
+    "residue": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.84716796875,
+        0.5217013888888888,
+        0.12451171875,
+        0.3611111111111111
+      ]
+    },
+    "adult": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.02783203125,
+        0.4522569444444444,
+        0.1396484375,
+        0.4331597222222222
+      ]
+    },
+    "fruiting": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.02783203125,
+        0.4522569444444444,
+        0.1396484375,
+        0.4331597222222222
+      ]
+    },
+    "icon": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.69775390625,
+        0.4861111111111111,
+        0.1064453125,
+        0.4001736111111111
+      ]
+    }
+  },
+  "icon": "icon",
+  "watering": {
+    "capacity_mm": 40.0,
+    "initial_mm": 24.0,
+    "per_action_mm": 30.0,
+    "warning_mm": 10.0,
+    "growth_min_mm": 2.0,
+    "dry_growth_factor": 0.0,
+    "rain_absorption": 0.8,
+    "rain_mm_per_hour": {
+      "61": 1.0,
+      "63": 4.0,
+      "65": 10.0
+    },
+    "observed_weather_max_seconds": 120
+  },
+  "harvest": {
+    "yield": 1,
+    "unit": "穗",
+    "residue_sprite": "residue",
+    "residue_height": 1.25,
+    "repeatable": false
+  },
+  "render": {
+    "columns": 1,
+    "rows": 1,
+    "spacing_x": 0.26,
+    "spacing_y": 0.44,
+    "anchor_y": 0.94,
+    "sway": 0.008,
+    "seed_sway": 0.0,
+    "shadow_scale": 0.22,
+    "edge_cleanup": {
+      "radius": 3,
+      "light_min": 0.68,
+      "alpha_max": 0.94,
+      "saturation_max": 0.28
+    },
+    "atlas_reference_height": 1.4,
+    "atlas_reference_region_height": 0.4331597222222222,
+    "art_blending": {
+      "style_saturation": 0.9,
+      "style_contrast": 0.94,
+      "texture_softness": 0.22,
+      "paper_grain": 0.012,
+      "phase_variation": 0.7,
+      "root_detail": 0.7,
+      "size_variation": 0.035,
+      "wind_response": 4.8
+    },
+    "non_seed_scale": 1.3
+  },
+  "sources": [
+    {
+      "url": "https://extension.umn.edu/agriculture/crop-production/corn/growth-and-development",
+      "note": "生殖期约55—65天；本包采用60天，其余阶段为中熟玉米参考配置，非统一生物学常数。"
+    },
+    {
+      "url": "https://extension.umn.edu/natural-resources/conservation/agricultural-soil-and-water/irrigation/irrigation-management-strategies",
+      "note": "需水随生育期变化；储水容量与缺水死亡时间为可调模拟参数，不冒充普适农艺阈值。"
+    }
+  ],
+  "type": "crop",
+  "temperature": {
+    "min_c": 10,
+    "max_c": 35,
+    "sowing_min_c": 10,
+    "sowing_max_c": 32,
+    "unsuitable_growth_factor": 0.0,
+    "stress_death_seconds": 172800,
+    "recovery_per_second": 2.0,
+    "note": "当前程序把适温范围用于成长与温度伤害；本轮不改变该算法，不能将这些范围解释为实测生存极限。种子使用播种范围，其他阶段优先使用阶段范围。"
+  },
+  "sowing": {
+    "label": "春末夏初露地播种（北半球参考）",
+    "recommended_months": [
+      4,
+      5,
+      6
+    ],
+    "note": "北半球露地参考播期；地区、品种、设施栽培可不同。月份仅提示，气温不是土温实测。",
+    "badge": ""
+  },
+  "parameter_reference": {
+    "updated": "2026-10-26",
+    "sources": [
+      "https://www.fao.org/4/s2022e/s2022e07.htm",
+      "https://extension.illinois.edu/gardening/corn"
+    ],
+    "basis": "中熟籽粒玉米，播种至籽粒集中成熟参考130天；并非甜玉米鲜穗的首次采摘日。单株参考1个主要果穗，未模拟受精和果穗大小。",
+    "days_are": "真实日、参考气候与供水条件下的阶段日历；不是按当前天气自动算出的物候预测",
+    "water_is": "mm/日的分阶段平均耗水参考；不等于逐日实测蒸散",
+    "universal_constants": false
+  },
+  "simulation_notes": [
+    "中熟籽粒玉米，播种至籽粒集中成熟参考130天；并非甜玉米鲜穗的首次采摘日。单株参考1个主要果穗，未模拟受精和果穗大小。",
+    "播种按已经适度湿润的土壤开始，初始水量为配置储水容量的60%；此后按阶段耗水和实际浇水补给。",
+    "适温范围、土壤水容量、干土死亡时限、温度死亡等待、单次产量仍是固定参数近似，不是品种通用的致死或产量常数。",
+    "维持现有单次采收、缺水和死亡玩法；本轮未更改编辑器或生长程序，不模拟新增春化、光周期、历史天气、分批采收或季节复花。",
+    "除了单株玉米修正为1穗，其他库存单位和每次产量保持兼容，游戏份数不等同于实测单株重量。"
+  ]
+}

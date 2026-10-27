@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "id": "tomato",
+  "name": "西红柿",
+  "version": "1.2.0",
+  "type": "crop",
+  "description": "露地中熟番茄一季集中采收参考150天，包含播种和育苗；不是移栽后150天，也不是第一枚果实开始变红的固定日期。多批果实在单次采收规则中合并。",
+  "clock": "real",
+  "duration": 12960000,
+  "color": "c75c49",
+  "model": "tomato",
+  "stages": [
+    {
+      "id": "seed",
+      "name": "种子",
+      "seconds": 604800,
+      "sprite": "seed",
+      "dry_sprite": "seed",
+      "dead_sprite": "seed_dead",
+      "height": 1.3,
+      "water_mm_per_day": 1.2,
+      "drought_death_seconds": 345600,
+      "harvestable": false
+    },
+    {
+      "id": "seedling",
+      "name": "幼苗",
+      "seconds": 3024000,
+      "sprite": "seedling",
+      "dry_sprite": "seedling_dry",
+      "dead_sprite": "seedling_dead",
+      "height": 1.3,
+      "water_mm_per_day": 2,
+      "drought_death_seconds": 604800,
+      "harvestable": false
+    },
+    {
+      "id": "vegetative",
+      "name": "长大开花",
+      "seconds": 2419200,
+      "sprite": "juvenile",
+      "dry_sprite": "juvenile_dry",
+      "dead_sprite": "juvenile_dead",
+      "height": 1.3,
+      "water_mm_per_day": 3,
+      "drought_death_seconds": 864000,
+      "harvestable": false
+    },
+    {
+      "id": "fruiting",
+      "name": "结果膨大",
+      "seconds": 4320000,
+      "sprite": "juvenile",
+      "dry_sprite": "juvenile_dry",
+      "dead_sprite": "juvenile_dead",
+      "height": 1.3,
+      "water_mm_per_day": 5,
+      "drought_death_seconds": 864000,
+      "harvestable": false
+    },
+    {
+      "id": "ripening",
+      "name": "转红成熟",
+      "seconds": 2592000,
+      "sprite": "mature",
+      "dry_sprite": "mature",
+      "dead_sprite": "juvenile_dead",
+      "height": 1.3,
+      "water_mm_per_day": 3.5,
+      "drought_death_seconds": 864000,
+      "harvestable": false
+    },
+    {
+      "id": "mature",
+      "name": "成熟",
+      "seconds": 0,
+      "sprite": "mature",
+      "dry_sprite": "mature",
+      "dead_sprite": "juvenile_dead",
+      "height": 1.3,
+      "water_mm_per_day": 3,
+      "drought_death_seconds": 604800,
+      "harvestable": true
+    }
+  ],
+  "assets": {
+    "seed": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.06298828125,
+        0.2092013888888889,
+        0.0966796875,
+        0.13975694444444445
+      ]
+    },
+    "seed_dead": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.24755859375,
+        0.2152777777777778,
+        0.1201171875,
+        0.1328125
+      ]
+    },
+    "seedling": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.46142578125,
+        0.1579861111111111,
+        0.0986328125,
+        0.21180555555555555
+      ]
+    },
+    "seedling_dry": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.65380859375,
+        0.1597222222222222,
+        0.103515625,
+        0.21006944444444445
+      ]
+    },
+    "seedling_dead": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.85205078125,
+        0.1345486111111111,
+        0.109375,
+        0.24305555555555555
+      ]
+    },
+    "juvenile": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.0302734375,
+        0.4809027777777778,
+        0.140625,
+        0.4036458333333333
+      ]
+    },
+    "juvenile_dry": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.197265625,
+        0.484375,
+        0.13623046875,
+        0.4001736111111111
+      ]
+    },
+    "juvenile_dead": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.36328125,
+        0.5199652777777778,
+        0.12744140625,
+        0.3645833333333333
+      ]
+    },
+    "mature": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.525390625,
+        0.4809027777777778,
+        0.13818359375,
+        0.4036458333333333
+      ]
+    },
+    "picked": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.69921875,
+        0.5529513888888888,
+        0.11328125,
+        0.3315972222222222
+      ]
+    },
+    "residue": {
+      "file": "states.png",
+      "atlas": true,
+      "scale": 1.0,
+      "region": [
+        0.84619140625,
+        0.5199652777777778,
+        0.12646484375,
+        0.3645833333333333
+      ]
+    },
+    "icon": {
+      "file": "icon.png",
+      "scale": 1.0,
+      "region": [
+        0,
+        0,
+        1,
+        1
+      ]
+    }
+  },
+  "icon": "icon",
+  "sowing": {
+    "label": "春夏播种（包括育苗期）",
+    "badge": "",
+    "recommended_months": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "note": "北半球露地参考播期；地区、品种、设施栽培可不同。月份仅提示，气温不是土温实测。"
+  },
+  "temperature": {
+    "min_c": 12,
+    "max_c": 32,
+    "sowing_min_c": 18,
+    "sowing_max_c": 30,
+    "unsuitable_growth_factor": 0.0,
+    "stress_death_seconds": 172800,
+    "recovery_per_second": 2.0,
+    "note": "当前程序把适温范围用于成长与温度伤害；本轮不改变该算法，不能将这些范围解释为实测生存极限。种子使用播种范围，其他阶段优先使用阶段范围。"
+  },
+  "watering": {
+    "capacity_mm": 45.0,
+    "initial_mm": 27.0,
+    "per_action_mm": 30.0,
+    "warning_mm": 10.0,
+    "growth_min_mm": 2.0,
+    "dry_growth_factor": 0.0,
+    "rain_absorption": 0.8,
+    "rain_mm_per_hour": {
+      "61": 1.0,
+      "63": 4.0,
+      "65": 10.0
+    },
+    "observed_weather_max_seconds": 120
+  },
+  "harvest": {
+    "unit": "个",
+    "residue_sprite": "residue",
+    "residue_height": 1.3,
+    "repeatable": false,
+    "yield": 16
+  },
+  "render": {
+    "columns": 1,
+    "rows": 1,
+    "spacing_x": 0.26,
+    "spacing_y": 0.44,
+    "anchor_y": 0.94,
+    "sway": 0.008,
+    "seed_sway": 0.0,
+    "shadow_scale": 0.22,
+    "atlas_reference_height": 1.4,
+    "atlas_reference_region_height": 0.4036458333333333,
+    "edge_cleanup": {
+      "radius": 3,
+      "light_min": 0.68,
+      "alpha_max": 0.94,
+      "saturation_max": 0.28
+    },
+    "art_blending": {
+      "style_saturation": 0.9,
+      "style_contrast": 0.94,
+      "texture_softness": 0.22,
+      "paper_grain": 0.012,
+      "phase_variation": 0.7,
+      "root_detail": 0.7,
+      "size_variation": 0.035,
+      "wind_response": 4.8
+    },
+    "non_seed_scale": 1.3
+  },
+  "simulation_notes": [
+    "露地中熟番茄一季集中采收参考150天，包含播种和育苗；不是移栽后150天，也不是第一枚果实开始变红的固定日期。多批果实在单次采收规则中合并。",
+    "播种按已经适度湿润的土壤开始，初始水量为配置储水容量的60%；此后按阶段耗水和实际浇水补给。",
+    "适温范围、土壤水容量、干土死亡时限、温度死亡等待、单次产量仍是固定参数近似，不是品种通用的致死或产量常数。",
+    "维持现有单次采收、缺水和死亡玩法；本轮未更改编辑器或生长程序，不模拟新增春化、光周期、历史天气、分批采收或季节复花。",
+    "除了单株玉米修正为1穗，其他库存单位和每次产量保持兼容，游戏份数不等同于实测单株重量。"
+  ],
+  "sources": [
+    {
+      "url": "https://extension.usu.edu/yardandgarden/research/grow-your-own-transplants-at-home",
+      "note": "生育及播期参考；默认阶段划分与数值为本包的可调整近似。"
+    },
+    {
+      "url": "https://yardandgarden.extension.iastate.edu/how-to/vegetable-harvest-guide",
+      "note": "生育及播期参考；默认阶段划分与数值为本包的可调整近似。"
+    }
+  ],
+  "parameter_reference": {
+    "updated": "2026-10-26",
+    "sources": [
+      "https://www.fao.org/4/s2022e/s2022e07.htm",
+      "https://www.fao.org/4/s2022e/s2022e02.htm",
+      "https://extension.umn.edu/agriculture/specialty-crops/vegetable-farming/crop-and-field-planning-tools-for-vegetable-farmers"
+    ],
+    "basis": "露地中熟番茄一季集中采收参考150天，包含播种和育苗；不是移栽后150天，也不是第一枚果实开始变红的固定日期。多批果实在单次采收规则中合并。",
+    "days_are": "真实日、参考气候与供水条件下的阶段日历；不是按当前天气自动算出的物候预测",
+    "water_is": "mm/日的分阶段平均耗水参考；不等于逐日实测蒸散",
+    "universal_constants": false
+  }
+}

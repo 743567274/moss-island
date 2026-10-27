@@ -1,0 +1,79 @@
+{
+  "version": "2.2.0",
+  "retrieved": "2026-10-21",
+  "assets": {
+    "grass-drummyfish.png": {
+      "author": "Drummyfish",
+      "source": "https://opengameart.org/content/4-hand-painted-ground-textures",
+      "download": "https://opengameart.org/sites/default/files/grass_34.png",
+      "license": "CC0",
+      "usage": "shared grass modulation in terrain shader",
+      "sha256": "8ad5d6826e118af89fd6d262098fef3f6020e25d0db3bac065652571f660e473",
+      "bytes": 561283,
+      "runtime_import_max_edge": 1024
+    },
+    "soil-melle.png": {
+      "author": "MELLE / Melissa Krautheim",
+      "source": "https://opengameart.org/content/handpainted-stone-way-texture",
+      "download": "https://opengameart.org/sites/default/files/dirt-texture_0.png",
+      "license": "CC0",
+      "usage": "earth grain modulation on planting beds",
+      "sha256": "d6c390397436dfbcbee3ca0d7f417953bea4a9f90df38a7b794f2b09a36d42b1",
+      "bytes": 813765,
+      "runtime_import_max_edge": 1024
+    },
+    "path-melle.png": {
+      "author": "MELLE / Melissa Krautheim",
+      "source": "https://opengameart.org/content/handpainted-stone-way-texture",
+      "download": "https://opengameart.org/sites/default/files/stone%20way-%20texture_0.png",
+      "license": "CC0",
+      "usage": "painted stepping-stone path",
+      "sha256": "c19fbd4e43fd4f16559c612c40bf5a39a0becd2dcfcdd7989c2df04b4cd17bcc",
+      "bytes": 839089,
+      "runtime_import_max_edge": 1024
+    },
+    "material-atlas.png": {
+      "source": "imagegen built-in, generated for this project",
+      "provenance": "exec-ff47f0fa-33c2-403d-b8c7-720d421f4b0a",
+      "usage": "original eight-region surface atlas: tile, timber, plaster, rock, grass, soil, bark, leaves",
+      "sha256": "407fb7aa0e649fcc7407faa711a26c70e892d6866d735d51b616faacf6434bba",
+      "bytes": 3342892,
+      "runtime_import_max_edge": 1024
+    },
+    "willow-bough-bold.png": {
+      "source": "imagegen built-in, generated and refined for this project",
+      "provenance": "exec-9142a883-5516-4da5-92cf-c2f95699ceca",
+      "usage": "alpha-scissored illustrated bough cards; twenty instances per willow",
+      "sha256": "a6f602c3ec982616c24bc63ebfaf1fdfe383f2c9dff2339b2fd5c046564856aa",
+      "bytes": 2221043,
+      "runtime_import_max_edge": 1024
+    },
+    "river-mountains.png": {
+      "usage": "Distant illustrated mountain background",
+      "sha256": "69b3e843c4c9bca1e6a0eabb37364d7ce868716633c131b7bf5b584c819e55b1",
+      "license": "Generated artwork",
+      "source": "User supplied garden reference, 2026-10-21",
+      "author": "Generated for this project with imagegen",
+      "runtime_import_max_edge": 2048,
+      "bytes": 2468479
+    },
+    "citrus-bough.png": {
+      "usage": "Alpha cutout orchard canopy shared by all growth stages",
+      "sha256": "5ea75124a18feb32ad77632c6de30052dcd5a47a3bf1049cd543cfbc0188ca42",
+      "license": "Generated artwork",
+      "source": "User supplied garden reference, 2026-10-21",
+      "author": "Generated for this project with imagegen",
+      "runtime_import_max_edge": 1024,
+      "bytes": 2207724
+    },
+    "meadow-gouache.png": {
+      "usage": "Hand painted meadow ground",
+      "sha256": "7696359474c1be39125524e8535b732b5e4740f0ed004577d1f088f4ab68b5cd",
+      "license": "Generated artwork",
+      "source": "User supplied garden reference, 2026-10-21",
+      "author": "Generated for this project with imagegen",
+      "runtime_import_max_edge": 1024,
+      "bytes": 3503461
+    }
+  }
+}

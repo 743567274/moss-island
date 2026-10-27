@@ -1,0 +1,12 @@
+[
+  {
+    "mode": "built-in image_gen",
+    "file": "assets/illustrated/willow-clean-day.png",
+    "prompt": "Edit target: the provided day Chinese pastoral farm illustration. Remove ONLY the single willow tree near the center, immediately behind the stone bridge, including its leaves, branches, trunk, roots and its tree-specific shadow (approximately normalized x .43 to .585, y .265 to .525). Seamlessly reconstruct the underlying blue river on its left and grassy right river bank. Preserve the riverbank's continuous edge. Keep the stone bridge, nearby stone lantern, house, pavilion, all surrounding vegetation, mountains, clouds, water, overall composition, perspective and daytime watercolor lighting exactly unchanged. Do not add any tree, shrub, object or text. Keep the same full-frame aspect ratio and pixel alignment. This is a localized object removal, not a restyle."
+  },
+  {
+    "mode": "built-in image_gen",
+    "file": "assets/illustrated/willow-clean-night.png",
+    "prompt": "Edit target: the provided night Chinese pastoral farm illustration. Remove ONLY the single willow tree near the center, immediately behind the stone bridge, including its leaves, branches, trunk, roots and its tree-specific shadow (approximately normalized x .43 to .585, y .265 to .525). Seamlessly reconstruct the underlying blue river on its left and grassy right river bank. Preserve the riverbank's continuous edge. Keep the stone bridge, nearby stone lantern, house, pavilion, all surrounding vegetation, mountains, clouds, water, overall composition, perspective and blue moonlit nighttime lighting and warm windows exactly unchanged. Do not add any tree, shrub, object or text. Keep the same full-frame aspect ratio and pixel alignment. This is a localized object removal, not a restyle."
+  }
+]

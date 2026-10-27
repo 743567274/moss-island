@@ -1,0 +1,198 @@
+{
+  "id": "lakeside",
+  "version": 1,
+  "world_size": [
+    32,
+    18
+  ],
+  "background": "res://assets/illustrated/modular-meadow.png",
+  "night_background": "res://assets/illustrated/moonlit-meadow.png",
+  "companion": "res://assets/illustrated/companion-garden.png",
+  "grids": {
+    "crops": {
+      "origin": [
+        0.22,
+        0.676
+      ],
+      "columns": 3,
+      "rows": 4,
+      "basis_a": [
+        1.12,
+        0.64
+      ],
+      "basis_b": [
+        -1.12,
+        0.64
+      ],
+      "spacing": 1.13
+    },
+    "orchard": {
+      "origin": [
+        0.685,
+        0.492
+      ],
+      "columns": 3,
+      "rows": 2,
+      "basis_a": [
+        1.4,
+        0.8
+      ],
+      "basis_b": [
+        -1.4,
+        0.8
+      ],
+      "spacing": 1.16
+    }
+  },
+  "water": {
+    "points": [
+      [
+        0.55,
+        0.29
+      ],
+      [
+        0.49,
+        0.42
+      ],
+      [
+        0.435,
+        0.55
+      ],
+      [
+        0.445,
+        0.65
+      ],
+      [
+        0.51,
+        0.74
+      ],
+      [
+        0.6,
+        0.81
+      ],
+      [
+        0.66,
+        0.85
+      ]
+    ],
+    "widths": [
+      0.042,
+      0.038,
+      0.04,
+      0.047,
+      0.048,
+      0.048,
+      0.026
+    ],
+    "bridge_exclusion": [
+      0.37,
+      0.49,
+      0.515,
+      0.625
+    ]
+  },
+  "lights": [
+    {
+      "id": "house_left",
+      "position": [
+        0.198,
+        0.512
+      ],
+      "radius": [
+        0.014,
+        0.031
+      ],
+      "energy": 0.38
+    },
+    {
+      "id": "house_right",
+      "position": [
+        0.27,
+        0.479
+      ],
+      "radius": [
+        0.013,
+        0.03
+      ],
+      "energy": 0.38
+    },
+    {
+      "id": "pavilion",
+      "lantern": true,
+      "position": [
+        0.871,
+        0.543
+      ],
+      "radius": [
+        0.014,
+        0.026
+      ],
+      "energy": 0.3
+    }
+  ],
+  "soil_regions": [
+    [
+      0.014322916666666666,
+      0.375,
+      0.46875,
+      0.2682291666666667
+    ],
+    [
+      0.51953125,
+      0.3743489583333333,
+      0.46484375,
+      0.2688802083333333
+    ]
+  ],
+  "soil_atlas": "res://assets/illustrated/soil-atlas.png",
+  "soil_edge_cleanup": {
+    "radius": 3,
+    "light_min": 0.68,
+    "alpha_max": 0.94,
+    "saturation_max": 0.28
+  },
+  "willow": {
+    "texture": "res://assets/illustrated/willow-v2.png",
+    "region": [
+      0.07416267942583732,
+      0.05582137161084529,
+      0.9027113237639554,
+      0.9290271132376395
+    ],
+    "root": [
+      0.505,
+      0.514
+    ],
+    "anchor": [
+      0.47,
+      0.985
+    ],
+    "height": 4.4,
+    "scale": 1.0,
+    "sway": 0.004,
+    "edge_cleanup": {
+      "radius": 3,
+      "light_min": 0.68,
+      "alpha_max": 0.94,
+      "saturation_max": 0.28,
+      "alpha_floor": 0.125
+    },
+    "clean_day": "res://assets/illustrated/willow-clean-day.png",
+    "clean_night": "res://assets/illustrated/willow-clean-night.png",
+    "clean_rect": [
+      0.43,
+      0.265,
+      0.585,
+      0.532
+    ],
+    "day_exposure": 0.92,
+    "wind_response": 6.0
+  },
+  "art_blending": {
+    "edge_grass": 0.64,
+    "root_shadow_strength": 0.17,
+    "soil_saturation": 0.92,
+    "soil_contrast": 0.94,
+    "paper_grain": 0.012
+  }
+}
