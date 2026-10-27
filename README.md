@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/icon.svg" alt="苔屿 Logo" width="112" height="112">
+</p>
+
 # 苔屿 · Moss Island
 
 **把自己的画，变成可以种植的桌面。**
@@ -6,7 +10,15 @@
 
 GitHub：[743567274/moss-island](https://github.com/743567274/moss-island)。项目代码采用 [GPL-3.0-only](LICENSE)。
 
-![地图编辑器：将背景与透明元素组合成桌面](docs/images/map-editor.jpg)
+## 桌面实景
+
+### 白天
+
+![白天桌面：青绿山水、农舍与可种植田块](docs/images/desktop-day.jpg)
+
+### 夜晚
+
+![夜间桌面：月光水面、农舍暖灯与亭内灯光](docs/images/desktop-night.jpg)
 
 ## 可以做什么
 
