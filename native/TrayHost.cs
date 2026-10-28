@@ -26,6 +26,8 @@ class TrayHost : ApplicationContext {
     int locating;
     bool launchPending;
     DateTime nextLaunch, launchDeadline;
+    long candidateDesktopHost;
+    DateTime desktopHostStableSince;
     string StartupCommand { get { return "\""+Application.ExecutablePath+"\" --startup"; } }
     string ControlDir { get { return Path.Combine(data,"host"); } }
 
@@ -238,6 +240,7 @@ class TrayHost : ApplicationContext {
     }
     void ScheduleLaunch(int delay) {
         launchPending=true;
+        candidateDesktopHost=0;
         nextLaunch=DateTime.UtcNow.AddMilliseconds(delay);
         launchDeadline=DateTime.UtcNow.AddSeconds(90);
     }
@@ -256,11 +259,19 @@ class TrayHost : ApplicationContext {
     void Launch() {
         if(renderer!=null && !renderer.HasExited) { launchPending=false; return; }
         long desktopHost=DesktopHost();
-        if(desktopHost==0) {
+        if(desktopHost==0 || desktopHost!=candidateDesktopHost) {
+            candidateDesktopHost=desktopHost;
+            desktopHostStableSince=DateTime.UtcNow;
             if(DateTime.UtcNow>=launchDeadline) {
                 launchPending=false;
                 tray.ShowBalloonTip(6000,"桌面尚未就绪","请在 Windows 桌面加载完成后重新双击程序。",ToolTipIcon.Warning);
             } else nextLaunch=DateTime.UtcNow.AddSeconds(2);
+            return;
+        }
+        // Explorer publishes its handles before its desktop finishes initializing.
+        // Require the same usable host on separate probes, not just a fixed boot delay.
+        if((DateTime.UtcNow-desktopHostStableSince).TotalMilliseconds<1500) {
+            nextLaunch=DateTime.UtcNow.AddMilliseconds(500);
             return;
         }
         launchPending=false;

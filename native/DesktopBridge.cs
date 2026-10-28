@@ -66,7 +66,7 @@ class DesktopBridge {
     }
     static bool Contains(Rect r,Point p) { return p.X>=r.L && p.X<r.R && p.Y>=r.T && p.Y<r.B; }
     static IntPtr Mouse(int code,IntPtr message,IntPtr data) {
-        if(code<0 || !desktop || locked) return CallNextHookEx(mouseHook,code,message,data);
+        if(code<0 || !desktop || suspended || locked) return CallNextHookEx(mouseHook,code,message,data);
         MouseData m=(MouseData)Marshal.PtrToStructure(data,typeof(MouseData));
         int msg=message.ToInt32();
         bool release=msg==0x202 || msg==0x208;
@@ -102,6 +102,7 @@ class DesktopBridge {
     [DllImport("user32.dll")] static extern IntPtr SendMessageTimeout(IntPtr h, uint msg, IntPtr w, IntPtr l, uint flags, uint timeout, out IntPtr result);
     [DllImport("user32.dll", SetLastError=true)] static extern IntPtr SetParent(IntPtr child, IntPtr parent);
     [DllImport("user32.dll")] static extern IntPtr GetParent(IntPtr h);
+    [DllImport("user32.dll")] static extern IntPtr GetWindow(IntPtr h, uint command);
     [DllImport("user32.dll", CharSet=CharSet.Unicode)] static extern int GetClassName(IntPtr h, StringBuilder text, int count);
     [DllImport("user32.dll", EntryPoint="GetWindowLongPtrW")] static extern IntPtr GetLong(IntPtr h, int index);
     [DllImport("user32.dll", EntryPoint="SetWindowLongPtrW")] static extern IntPtr SetLong(IntPtr h, int index, IntPtr value);
@@ -163,7 +164,7 @@ class DesktopBridge {
     static long originalStyle, originalEx;
     static Rect originalRect, monitorRect;
     static string folder;
-    static bool desktop, locked;
+    static bool desktop, locked, suspended;
     static int monitorIndex;
     const long WS_CHILD=0x40000000L, WS_POPUP=0x80000000L, WS_TRANSPARENT=0x20L, WS_TOOLWINDOW=0x80L;
     class PowerWindow : NativeWindow, IDisposable {
@@ -209,6 +210,8 @@ class DesktopBridge {
     static IntPtr DesktopWorker(bool create=true) {
         IntPtr progman=FindWindow("Progman",null), result;
         shellRoot=progman;
+        IntPtr previousIcons=icons;
+        icons=IntPtr.Zero;
         if(progman==IntPtr.Zero) return IntPtr.Zero;
         if(create) SendMessageTimeout(progman,0x052C,IntPtr.Zero,IntPtr.Zero,2,1000,out result);
         IntPtr found=IntPtr.Zero;
@@ -221,11 +224,52 @@ class DesktopBridge {
             }
             return true;
         },IntPtr.Zero);
+        if(icons!=previousIcons) { iconsValid=false; iconRects.Clear(); }
+        // Do not expose a renderer while Explorer is still constructing its icon view.
+        Rect bounds;
+        if(icons==IntPtr.Zero || !IsWindowVisible(icons)
+            || FindWindowEx(icons,IntPtr.Zero,"SysListView32",null)==IntPtr.Zero
+            || FindWindow("Shell_TrayWnd",null)==IntPtr.Zero
+            || !GetClientRect(icons,out bounds) || bounds.R<=0 || bounds.B<=0) return IntPtr.Zero;
         // Raised desktop (Win11 24H2+): use Progman as the GPU host and
         // place our child immediately below ShellView, above wallpaper WorkerW.
         // A child of WorkerW can be attached yet never composited on this layout.
-        if(found!=IntPtr.Zero && (GetLong(progman,-20).ToInt64() & 0x00200000L)!=0) return progman;
+        if(found!=IntPtr.Zero && GetParent(icons)==progman && (GetLong(progman,-20).ToInt64() & 0x00200000L)!=0) return progman;
+        if(found!=IntPtr.Zero && GetParent(found)!=IntPtr.Zero) return IntPtr.Zero;
         return found;
+    }
+    static bool Precedes(IntPtr above,IntPtr below) {
+        // GW_HWNDPREV walks only siblings, from the wallpaper towards the top.
+        for(IntPtr h=GetWindow(below,3);h!=IntPtr.Zero;h=GetWindow(h,3))
+            if(h==above) return true;
+        return false;
+    }
+    static long DesktopExStyle() {
+        return (originalEx & ~0x40000L & ~0x8L)|WS_TRANSPARENT|WS_TOOLWINDOW|0x08000000L;
+    }
+    static void SuspendDesktop() {
+        if(mouseHook!=IntPtr.Zero) { UnhookWindowsHookEx(mouseHook); mouseHook=IntPtr.Zero; }
+        heldButtons=0; passedButtons=0; pointerAvailable=false;
+        inputQueue.Length=0; inputQueue.Append("0|0|0|0|0\n");
+        ShowWindow(window,0);
+        if(!suspended) Report("waiting-for-desktop");
+        suspended=true;
+    }
+    static bool KeepBelowIcons() {
+        if(worker==IntPtr.Zero || !IsWindow(worker) || !IsWindow(icons) || GetParent(window)!=worker) return false;
+        long style=GetLong(window,-16).ToInt64();
+        long desiredStyle=(style & ~WS_POPUP & ~0x00CF0000L)|WS_CHILD|0x04000000L;
+        long desiredEx=DesktopExStyle();
+        bool changed=style!=desiredStyle || GetLong(window,-20).ToInt64()!=desiredEx;
+        if(style!=desiredStyle) SetLong(window,-16,new IntPtr(desiredStyle));
+        if(GetLong(window,-20).ToInt64()!=desiredEx) SetLong(window,-20,new IntPtr(desiredEx));
+        bool wrongOrder=worker==shellRoot && (GetParent(icons)!=worker || !Precedes(icons,window));
+        if(worker==shellRoot && GetParent(icons)!=worker) return false;
+        if(changed || wrongOrder) {
+            IntPtr after=worker==shellRoot?icons:new IntPtr(1);
+            if(!SetWindowPos(window,after,0,0,0,0,0x1|0x2|0x10|0x20|0x200)) return false;
+        }
+        return worker!=shellRoot || Precedes(icons,window);
     }
     static System.Collections.Generic.List<Rect> Monitors() {
         var list=new System.Collections.Generic.List<Rect>();
@@ -252,14 +296,15 @@ class DesktopBridge {
             else File.Move(Path.Combine(folder,"status.tmp"),dest);
         } catch(IOException) {}
     }
-    static void Restore() {
+    static void Restore(bool show=true) {
         if(mouseHook!=IntPtr.Zero) { UnhookWindowsHookEx(mouseHook); mouseHook=IntPtr.Zero; }
         if(!IsWindow(window)) return;
+        if(!show) ShowWindow(window,0);
         SetParent(window,originalParent);
         SetLong(window,-16,new IntPtr(originalStyle));
         SetLong(window,-20,new IntPtr(originalEx));
-        SetWindowPos(window,IntPtr.Zero,originalRect.L,originalRect.T,originalRect.R-originalRect.L,originalRect.B-originalRect.T,0x20|0x40|0x10);
-        ShowWindow(window,4); desktop=false; locked=false;
+        SetWindowPos(window,IntPtr.Zero,originalRect.L,originalRect.T,originalRect.R-originalRect.L,originalRect.B-originalRect.T,0x20|0x10|(show?0x40u:0u));
+        if(show) ShowWindow(window,4); desktop=false; locked=false;
         if(patchedWorker!=IntPtr.Zero && IsWindow(patchedWorker) && GetLong(patchedWorker,-16).ToInt64()==(workerOriginalStyle|0x02000000L))
             SetLong(patchedWorker,-16,new IntPtr(workerOriginalStyle));
         patchedWorker=IntPtr.Zero;
@@ -269,26 +314,26 @@ class DesktopBridge {
         // Once attached, locking is an input-only transition. Reparenting or refreshing
         // the frame here can recreate Godot's swapchain and briefly expose a black desktop.
         Rect current; GetWindowRect(window,out current);
-        bool needsAttach=worker==IntPtr.Zero || !IsWindow(worker) || GetParent(window)!=worker
+        bool needsAttach=suspended || worker==IntPtr.Zero || !IsWindow(worker) || GetParent(window)!=worker
             || current.L!=monitorRect.L || current.T!=monitorRect.T || current.R!=monitorRect.R || current.B!=monitorRect.B;
         if(needsAttach) {
             worker=DesktopWorker();
-            if(worker==IntPtr.Zero) { Restore(); Report("error:Explorer WorkerW unavailable"); return; }
+            if(worker==IntPtr.Zero) { locked=value; SuspendDesktop(); return; }
             // The raised desktop host must clip its GPU-rendered child area.
             // Only patch on attachment; lock/unlock remains input-only.
             if((GetLong(worker,-16).ToInt64() & 0x02000000L)==0) {
                 patchedWorker=worker; workerOriginalStyle=GetLong(worker,-16).ToInt64();
                 SetLong(worker,-16,new IntPtr(workerOriginalStyle|0x02000000L));
             }
-            SetLong(window,-16,new IntPtr((originalStyle & ~WS_POPUP & ~0x00CF0000L)|WS_CHILD));
+            SetLong(window,-16,new IntPtr((originalStyle & ~WS_POPUP & ~0x00CF0000L)|WS_CHILD|0x04000000L));
             // --wid may initially set an owner rather than a WS_CHILD parent.
             // GetParent returns both; always commit parenting after child style.
             SetParent(window,worker);
-            SetLong(window,-20,new IntPtr((originalEx & ~0x40000L)|WS_TRANSPARENT|WS_TOOLWINDOW|0x08000000L));
+            SetLong(window,-20,new IntPtr(DesktopExStyle()));
             Point point=new Point(); point.X=monitorRect.L; point.Y=monitorRect.T;
             MapWindowPoints(IntPtr.Zero,worker,ref point,1);
             if(!SetWindowPos(window,worker==shellRoot && icons!=IntPtr.Zero?icons:IntPtr.Zero,point.X,point.Y,monitorRect.R-monitorRect.L,monitorRect.B-monitorRect.T,0x20|0x40|0x10)
-                || GetParent(window)!=worker) { int error=Marshal.GetLastWin32Error(); Restore(); Report("error:Desktop attachment failed ("+error+")"); return; }
+                || GetParent(window)!=worker) { locked=value; SuspendDesktop(); return; }
             SetWindowPos(worker,IntPtr.Zero,0,0,0,0,0x20|0x10|0x1|0x2|0x4);
             // Raised desktop ShellView caches the old wallpaper surface. Refresh
             // its composition once after attaching, never on lock/unlock.
@@ -297,9 +342,11 @@ class DesktopBridge {
                 ShowWindow(icons,4);
             }
             // Commit after resizing: Godot may refresh EXSTYLE while handling WM_SIZE.
-            SetLong(window,-20,new IntPtr((originalEx & ~0x40000L)|WS_TRANSPARENT|WS_TOOLWINDOW|0x08000000L));
+            SetLong(window,-20,new IntPtr(DesktopExStyle()));
             attachmentCount++;
         }
+        if(!KeepBelowIcons()) { locked=value; SuspendDesktop(); return; }
+        suspended=false;
         if(value && !locked) inputQueue.Append("0|0|0|0|0\n");
         locked=value; heldButtons=0; passedButtons=0;
         pointerAvailable=false;
@@ -360,6 +407,13 @@ class DesktopBridge {
                         if(controllerPid>0) using(var controller=Process.GetProcessById(controllerPid)) { if(controller.HasExited) break; }
                     } catch(ArgumentException) { break; }
                     if(desktop) {
+                        IntPtr expected=DesktopWorker(false);
+                        if(expected==IntPtr.Zero) SuspendDesktop();
+                        else if(suspended || expected!=worker || GetParent(window)!=expected) {
+                            // A recreated Explorer view invalidates both parenting and Z-order.
+                            suspended=true;
+                            SetLocked(locked);
+                        } else if(!KeepBelowIcons()) SuspendDesktop();
                         var displays=Monitors();
                         if(monitorIndex<displays.Count) {
                             var bounds=displays[monitorIndex]; Rect actual; GetWindowRect(window,out actual);
@@ -410,15 +464,14 @@ class DesktopBridge {
                     }
                     else if(action=="quit") running=false;
                 }
-                if(desktop && !IsWindow(worker)) { Restore(); Report("error:Explorer restarted"); }
-                if(desktop && !locked && DateTime.UtcNow>=nextIconRefresh) {
+                if(desktop && !suspended && !locked && DateTime.UtcNow>=nextIconRefresh) {
                     RefreshIcons(); nextIconRefresh=DateTime.UtcNow.AddSeconds(1);
                 }
                 FlushInput();
                 Thread.Sleep(desktop && !locked?8:150);
             }
         } catch(Exception e) { Report("error:"+e.GetType().Name); }
-        finally { if(desktop) Restore(); powerWindow.Dispose(); }
+        finally { if(desktop) Restore(false); powerWindow.Dispose(); }
         return 0;
     }
 }

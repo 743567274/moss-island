@@ -283,7 +283,7 @@ static func description(crop_id: String) -> String:
 	var climate=config.get("temperature",{})
 	if not climate.is_empty():
 		text+="\n适宜生长温度：%.1f–%.1f°C\n适宜%s温度：%.1f–%.1f°C" % [climate.min_c,climate.max_c,"种下" if tree else "播种",climate.sowing_min_c,climate.sowing_max_c]
-		text+="\n持续不适温度 %.1f 小时后枯死（可配置模拟）" % (float(climate.stress_death_seconds)/3600.0)
+		text+="\n不适温耐受：%s小时\n达到上限后枯死" % String.num(float(climate.stress_death_seconds)/3600.0,1)
 	if tree:
 		var cycle=0.0
 		var started=false
