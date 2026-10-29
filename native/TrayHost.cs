@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -25,13 +25,36 @@ class TrayHost : ApplicationContext {
     ToolStripMenuItem lockItem;
     int locating;
     bool launchPending;
+    int recoveryAttempts;
+    DateTime rendererStarted;
     DateTime nextLaunch, launchDeadline;
     long candidateDesktopHost;
     DateTime desktopHostStableSince;
     string StartupCommand { get { return "\""+Application.ExecutablePath+"\" --startup"; } }
     string ControlDir { get { return Path.Combine(data,"host"); } }
 
+    static readonly object logLock=new object();
+    static void Log(string message) {
+        try {
+            string dir=Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"Godot","app_userdata","苔屿 · 桌面微观农场","host");
+            Directory.CreateDirectory(dir);
+            lock(logLock) File.AppendAllText(Path.Combine(dir,"startup.log"),DateTime.Now.ToString("o")+" "+message+Environment.NewLine);
+        } catch(Exception) { }
+    }
     [STAThread] static int Main(string[] args) {
+        Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+        Application.ThreadException+=delegate(object sender,ThreadExceptionEventArgs e) {
+            Log(e.Exception.ToString());
+            MessageBox.Show("程序操作失败："+e.Exception.Message+"\n诊断日志：%APPDATA%\\Godot\\app_userdata\\苔屿 · 桌面微观农场\\host\\startup.log","苔屿");
+        };
+        try { return Run(args); }
+        catch(Exception e) {
+            Log("Startup failed: "+e);
+            MessageBox.Show("启动失败："+e.Message+"\n请完整解压便携包，并提供存档目录 host 中的 startup.log。","苔屿启动失败");
+            return 1;
+        }
+    }
+    static int Run(string[] args) {
         Application.EnableVisualStyles();
         bool first;
         using(var mutex=new Mutex(true,"Local\\MossIslandTrayHost_v2",out first)) {
@@ -108,6 +131,7 @@ class TrayHost : ApplicationContext {
             }
         };
         menu.Items.Add("存档目录",null,delegate { Process.Start("explorer.exe",data); });
+        menu.Items.Add("重试启动壁纸",null,delegate { if(renderer==null || renderer.HasExited) { recoveryAttempts=0; ScheduleLaunch(0); } else tray.ShowBalloonTip(4000,"苔屿","壁纸进程仍在运行，锁屏恢复由桌面组件自动处理。",ToolTipIcon.Info); });
         menu.Items.Add("官网",null,delegate {
             try {
                 Process.Start(new ProcessStartInfo("https://www.gongjudengta.top/article/224") { UseShellExecute=true });
@@ -251,7 +275,7 @@ class TrayHost : ApplicationContext {
         info.UseShellExecute=false; info.CreateNoWindow=true;
         info.WindowStyle=ProcessWindowStyle.Hidden; info.RedirectStandardOutput=true;
         using(var probe=Process.Start(info)) {
-            if(!probe.WaitForExit(2500)) return 0;
+            if(!probe.WaitForExit(2500)) { try { probe.Kill(); } catch(InvalidOperationException) {} Log("Desktop host probe timed out"); return 0; }
             long handle;
             return Int64.TryParse(probe.StandardOutput.ReadToEnd().Trim(),out handle)?handle:0;
         }
@@ -296,7 +320,13 @@ class TrayHost : ApplicationContext {
         string graphics="--rendering-method mobile --rendering-driver vulkan --wid "+desktopHost;
         var info=new ProcessStartInfo(exe,graphics+" --log-file \""+Path.Combine(ControlDir,"renderer-"+mode+".log")+"\" -- --renderer="+mode+" --controller-pid="+Process.GetCurrentProcess().Id+" --control-dir=\""+ControlDir+"\"");
         info.UseShellExecute=false; info.CreateNoWindow=true; info.WorkingDirectory=root;
-        renderer=Process.Start(info); locked=true; switching=false;
+        info.RedirectStandardOutput=true; info.RedirectStandardError=true;
+        Log("Launching renderer on "+Environment.OSVersion+"; 64-bit="+Environment.Is64BitOperatingSystem+"; host="+desktopHost);
+        renderer=new Process(); renderer.StartInfo=info;
+        renderer.OutputDataReceived+=delegate(object sender,DataReceivedEventArgs e) { if(!String.IsNullOrEmpty(e.Data)) Log("Renderer: "+e.Data); };
+        renderer.ErrorDataReceived+=delegate(object sender,DataReceivedEventArgs e) { if(!String.IsNullOrEmpty(e.Data)) Log("Renderer error: "+e.Data); };
+        renderer.Start(); renderer.BeginOutputReadLine(); renderer.BeginErrorReadLine();
+        rendererStarted=DateTime.UtcNow; locked=true; switching=false;
         File.WriteAllText(Path.Combine(data,"host-mode.txt"),mode);
         UpdateMenu();
     }
@@ -324,10 +354,17 @@ class TrayHost : ApplicationContext {
             }
         }
         if(renderer!=null && renderer.HasExited) {
-            File.AppendAllText(Path.Combine(ControlDir,"startup.log"),DateTime.Now.ToString("s")+" Renderer exit="+renderer.ExitCode+Environment.NewLine);
+            Log("Renderer exit="+renderer.ExitCode);
             renderer.Dispose(); renderer=null;
             if(quitting) { ExitHost(); return; }
-            tray.ShowBalloonTip(4000,"苔屿","壁纸已退出，请重新打开程序。存档保留在本地。",ToolTipIcon.Info);
+            if((DateTime.UtcNow-rendererStarted).TotalSeconds>120) recoveryAttempts=0;
+            if(recoveryAttempts<2) {
+                recoveryAttempts++; ScheduleLaunch(3000);
+                tray.ShowBalloonTip(5000,"正在恢复壁纸","渲染程序已退出，正在等待桌面就绪后重新加载。",ToolTipIcon.Info);
+            } else {
+                tray.ShowBalloonTip(10000,"壁纸启动失败","请完整解压程序并检查显卡驱动。右键托盘打开存档目录，将 host/startup.log 提供给开发者。",ToolTipIcon.Warning);
+                MessageBox.Show("壁纸连续启动失败，已停止自动重试。\n请确认完整解压便携包、显卡驱动支持 Vulkan。\n打开托盘的存档目录，提供 host/startup.log 和 renderer-immersive.log，以确定 Insider 兼容性或驱动错误。","苔屿启动诊断");
+            }
         }
         if(launchPending && !quitting && DateTime.UtcNow>=nextLaunch) Launch();
         if(switching && renderer!=null && !renderer.HasExited && (DateTime.UtcNow-switchStarted).TotalSeconds>15) {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -164,15 +164,26 @@ class DesktopBridge {
     static long originalStyle, originalEx;
     static Rect originalRect, monitorRect;
     static string folder;
-    static bool desktop, locked, suspended;
+    static bool desktop, locked, suspended, sessionLocked, refreshVisibility;
+    static DateTime resumeAfter;
     static int monitorIndex;
     const long WS_CHILD=0x40000000L, WS_POPUP=0x80000000L, WS_TRANSPARENT=0x20L, WS_TOOLWINDOW=0x80L;
+    [DllImport("wtsapi32.dll",SetLastError=true)] static extern bool WTSRegisterSessionNotification(IntPtr h,uint flags);
+    [DllImport("wtsapi32.dll")] static extern bool WTSUnRegisterSessionNotification(IntPtr h);
+    static void ResumeDesktop() {
+        sessionLocked=false; suspended=true; refreshVisibility=true;
+        resumeAfter=DateTime.UtcNow.AddSeconds(2);
+        ReportPower(true);
+    }
     class PowerWindow : NativeWindow, IDisposable {
         IntPtr registration;
+        bool sessionRegistered;
+        public void EnsureSessionRegistration() { if(!sessionRegistered) sessionRegistered=WTSRegisterSessionNotification(Handle,0); }
         public PowerWindow() {
             var parameters=new CreateParams(); parameters.Caption="MossIsland Power";
             parameters.ExStyle=(int)WS_TOOLWINDOW;
             CreateHandle(parameters);
+            EnsureSessionRegistration();
             var guid=new Guid("6fe69556-704a-47a0-8f24-c28d936fda47");
             registration=RegisterPowerSettingNotification(Handle,ref guid,0);
         }
@@ -180,13 +191,22 @@ class DesktopBridge {
             if(m.Msg==0x218) {
                 long code=m.WParam.ToInt64();
                 if(code==4) ReportPower(false);
-                else if(code==7 || code==18) ReportPower(true);
+                else if(code==7 || code==18) ResumeDesktop();
                 else if(code==0x8013 && Marshal.ReadInt32(m.LParam,16)==4)
                     ReportPower(Marshal.ReadInt32(m.LParam,20)!=0);
+            }
+            if(m.Msg==0x2B1) {
+                long reason=m.WParam.ToInt64();
+                if(reason==7 || reason==2 || reason==4) {
+                    sessionLocked=true;
+                    if(desktop) SuspendDesktop();
+                    ReportPower(false);
+                } else if(reason==8 || reason==1 || reason==3 || reason==15) ResumeDesktop();
             }
             base.WndProc(ref m);
         }
         public void Dispose() {
+            if(sessionRegistered) WTSUnRegisterSessionNotification(Handle);
             if(registration!=IntPtr.Zero) UnregisterPowerSettingNotification(registration);
             DestroyHandle();
         }
@@ -311,6 +331,7 @@ class DesktopBridge {
     }
     static void SetLocked(bool value) {
         if(!desktop) return;
+        if(sessionLocked || DateTime.UtcNow<resumeAfter) { locked=value; SuspendDesktop(); return; }
         // Once attached, locking is an input-only transition. Reparenting or refreshing
         // the frame here can recreate Godot's swapchain and briefly expose a black desktop.
         Rect current; GetWindowRect(window,out current);
@@ -406,8 +427,9 @@ class DesktopBridge {
                         using(var parent=Process.GetProcessById(parentPid)) { if(parent.HasExited) break; }
                         if(controllerPid>0) using(var controller=Process.GetProcessById(controllerPid)) { if(controller.HasExited) break; }
                     } catch(ArgumentException) { break; }
+                    powerWindow.EnsureSessionRegistration();
                     if(desktop) {
-                        IntPtr expected=DesktopWorker(false);
+                        IntPtr expected=sessionLocked || DateTime.UtcNow<resumeAfter?IntPtr.Zero:DesktopWorker(false);
                         if(expected==IntPtr.Zero) SuspendDesktop();
                         else if(suspended || expected!=worker || GetParent(window)!=expected) {
                             // A recreated Explorer view invalidates both parenting and Z-order.
@@ -415,7 +437,7 @@ class DesktopBridge {
                             SetLocked(locked);
                         } else if(!KeepBelowIcons()) SuspendDesktop();
                         var displays=Monitors();
-                        if(monitorIndex<displays.Count) {
+                        if(!sessionLocked && DateTime.UtcNow>=resumeAfter && monitorIndex<displays.Count) {
                             var bounds=displays[monitorIndex]; Rect actual; GetWindowRect(window,out actual);
                             if(bounds.L!=monitorRect.L || bounds.T!=monitorRect.T || bounds.R!=monitorRect.R || bounds.B!=monitorRect.B || actual.L!=bounds.L || actual.T!=bounds.T || actual.R!=bounds.R || actual.B!=bounds.B) {
                                 monitorRect=bounds; SetLocked(locked);
@@ -423,7 +445,8 @@ class DesktopBridge {
                         }
                     }
                     bool covered=IsCovered(window);
-                    if(!coveredState.HasValue || coveredState.Value!=covered) {
+                    if(refreshVisibility || !coveredState.HasValue || coveredState.Value!=covered) {
+                        refreshVisibility=false;
                         coveredState=covered; ReportVisibility(covered);
                     }
                 }
