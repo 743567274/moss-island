@@ -42,6 +42,7 @@ var environment_preview={}
 var last_manual_location_change=0.0
 var map_editor: MapEditorWindow
 var crop_editor: CropEditorWindow
+var clear_crop_dialog: ConfirmationDialog
 var project_window: MapProjectWindow
 
 func _ready() -> void:
@@ -363,11 +364,7 @@ func _action(name: String, value: Variant) -> void:
 		"harvest_selected":
 			if selected<0 or selected>=state.data.plots.size() or ui.selection!=selected:
 				return
-			var plot=state.data.plots[selected]
-			var changed=state.clear_dead(selected) if plot.health in ["dead","harvested"] else state.harvest(selected,Time.get_unix_time_from_system())
-			if changed:
-				ui.seed_picker.hide()
-				after_change()
+			_request_clear_crop()
 		"crop":
 			_action("plant_selected",value)
 		"tool":
@@ -412,6 +409,54 @@ func save_farm(feedback: bool) -> void:
 		last_saved="已保存 %02d:%02d" % [date.hour,date.minute]
 		if feedback:
 			ui.toast("农场已保存，离线时也会慢慢生长。")
+
+
+func _request_clear_crop() -> void:
+	if selected<0 or selected>=state.data.plots.size() or ui.selection!=selected or desktop.locked:
+		return
+	var index=selected
+	var target_state=state
+	var target=state.data.plots[index]
+	if str(target.crop).is_empty():
+		return
+	ui.seed_picker.hide()
+	if target.health in ["dead","harvested"]:
+		if state.clear_dead(index):
+			after_change()
+		return
+	if is_instance_valid(clear_crop_dialog):
+		clear_crop_dialog.grab_focus()
+		return
+	var dialog=ConfirmationDialog.new()
+	clear_crop_dialog=dialog
+	dialog.title="确认铲除作物"
+	dialog.theme=MapEditorTheme.create(ui.theme)
+	dialog.dialog_text="%02d 号田的%s仍然存活。\n铲除后将清空本田作物，不会获得收获物。\n确定要铲除吗？" % [index+1,ContentCatalog.crops[target.crop].name]
+	dialog.ok_button_text="确认铲除"
+	dialog.cancel_button_text="取消"
+	dialog.exclusive=true
+	dialog.always_on_top=true
+	add_child(dialog)
+	var apply_action=func(harvest_only: bool):
+		# Keep the original plot identity: selection/project changes must never
+		# redirect a pending confirmation to another plant, even of the same species.
+		if state!=target_state or desktop.locked or selected!=index or ui.selection!=index or index>=state.data.plots.size() or not is_same(state.data.plots[index],target):
+			ui.toast("田块选择已变化，请重新选择后操作。")
+			dialog.queue_free()
+			return
+		var changed=state.harvest(index,Time.get_unix_time_from_system()) if harvest_only else state.clear_crop(index)
+		if changed:
+			after_change()
+			ui.toast("已收获。" if harvest_only else "已铲除，田块可以重新播种。")
+		dialog.queue_free()
+	dialog.confirmed.connect(func(): apply_action.call(false))
+	dialog.canceled.connect(dialog.queue_free)
+	dialog.close_requested.connect(dialog.queue_free)
+	if state.harvestable(target):
+		dialog.add_button("收获",false,"harvest")
+		dialog.custom_action.connect(func(action: StringName):
+			if action==&"harvest": apply_action.call(true))
+	dialog.popup_centered(Vector2i(420,170))
 
 func change_setting(key: String, value: Variant) -> void:
 	var now=Time.get_unix_time_from_system()

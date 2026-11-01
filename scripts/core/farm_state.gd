@@ -244,6 +244,11 @@ func harvest(index: int,now: float) -> bool:
 func clear_dead(index: int) -> bool:
 	if index<0 or index>=data.plots.size() or not data.plots[index].health in ["dead","harvested"]:
 		return false
+	return clear_crop(index)
+
+func clear_crop(index: int) -> bool:
+	if index<0 or index>=data.plots.size() or str(data.plots[index].crop).is_empty():
+		return false
 	var key=data.plots[index].get("map_plot_id","")
 	data.plots[index]=empty_plot(index)
 	if not str(key).is_empty():

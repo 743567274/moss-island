@@ -233,7 +233,7 @@ func _build_dock() -> void:
 	var tools=row(toolbar,7)
 	var drag_handle=_hud_grip(tools)
 	_register_hud("tools",toolbar,drag_handle)
-	for spec in [{"id":"harvest","icon":"shovel","tip":"收获当前田块／清理枯株"},{"id":"plant","icon":"backpack","tip":"为当前田块选择种子"},{"id":"water","icon":"watering","tip":"给当前田块浇水"}]:
+	for spec in [{"id":"harvest","icon":"shovel","tip":"铲除当前作物／收获成熟作物"},{"id":"plant","icon":"backpack","tip":"为当前田块选择种子"},{"id":"water","icon":"watering","tip":"给当前田块浇水"}]:
 		var key=str(spec.id)
 		var b=button(tools,"",func():
 			if key=="plant":
@@ -312,7 +312,7 @@ func refresh() -> void:
 		crop_buttons[key].disabled=occupied
 		crop_buttons[key].tooltip_text=ContentCatalog.description(key)+("\n请先清理当前作物" if occupied else "\n种植到 %02d 号田" % (selection+1))
 	operation_buttons.plant.disabled=occupied
-	operation_buttons.harvest.disabled=not occupied or (not state.harvestable(plot) and not plot.health in ["dead","harvested"])
+	operation_buttons.harvest.disabled=not occupied
 	operation_buttons.water.disabled=not occupied
 	plot_title.text="%02d 号田 · %s" % [selection+1,FarmState.CROPS[plot.crop].name if occupied else "空闲"]
 	crop_logo.visible=occupied
@@ -354,7 +354,7 @@ func refresh() -> void:
 	moisture_progress.add_theme_stylebox_override("fill",style(water_color,4,0))
 	moisture_progress.tooltip_text="土壤储水 %.1f / %.0f mm" % [plot.water_mm,config.watering.capacity_mm]
 	operation_buttons.water.disabled=inactive or plot.water_mm>=config.watering.capacity_mm
-	operation_buttons.harvest.tooltip_text="清理当前田块的枯株" if inactive else "收获当前田块"
+	operation_buttons.harvest.tooltip_text="清理当前田块的枯株" if inactive else ("收获或铲除当前作物" if state.harvestable(plot) else "铲除当前作物（需确认）")
 	stats.text="清理后可重新播种" if inactive else ("已成熟，可以采收" if state.harvestable(plot) else "正常供水下约 "+duration_text(maxf(0,config.duration-plot.growth))+" 后成熟")
 	var climate=config.get("temperature",{})
 	if not climate.is_empty():
