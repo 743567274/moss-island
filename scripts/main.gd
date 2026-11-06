@@ -42,7 +42,7 @@ var environment_preview={}
 var last_manual_location_change=0.0
 var map_editor: MapEditorWindow
 var crop_editor: CropEditorWindow
-var clear_crop_dialog: ConfirmationDialog
+var clear_crop_dialog: Control
 var project_window: MapProjectWindow
 
 func _ready() -> void:
@@ -414,9 +414,14 @@ func save_farm(feedback: bool) -> void:
 func _request_clear_crop() -> void:
 	if selected<0 or selected>=state.data.plots.size() or ui.selection!=selected or desktop.locked:
 		return
-	var index=selected
-	var target_state=state
-	var target=state.data.plots[index]
+	# Desktop input is injected with Viewport.push_input(). Do not rebuild the
+	# GUI or change focus from a pressed signal inside that input dispatch.
+	print("[crop-clear] scheduling confirmation")
+	_open_clear_crop.call_deferred(selected,state,state.data.plots[selected])
+
+func _open_clear_crop(index: int,target_state: FarmState,target: Dictionary) -> void:
+	if state!=target_state or desktop.locked or selected!=index or ui.selection!=index or index<0 or index>=state.data.plots.size() or not is_same(state.data.plots[index],target):
+		return
 	if str(target.crop).is_empty():
 		return
 	ui.seed_picker.hide()
@@ -425,18 +430,52 @@ func _request_clear_crop() -> void:
 			after_change()
 		return
 	if is_instance_valid(clear_crop_dialog):
-		clear_crop_dialog.grab_focus()
 		return
-	var dialog=ConfirmationDialog.new()
+	# Use the wallpaper's forwarded GUI input. A native exclusive dialog can
+	# disable its non-activating desktop owner while remaining inaccessible.
+	print("[crop-clear] creating overlay")
+	var dialog=Control.new()
 	clear_crop_dialog=dialog
-	dialog.title="确认铲除作物"
-	dialog.theme=MapEditorTheme.create(ui.theme)
-	dialog.dialog_text="%02d 号田的%s仍然存活。\n铲除后将清空本田作物，不会获得收获物。\n确定要铲除吗？" % [index+1,ContentCatalog.crops[target.crop].name]
-	dialog.ok_button_text="确认铲除"
-	dialog.cancel_button_text="取消"
-	dialog.exclusive=true
-	dialog.always_on_top=true
-	add_child(dialog)
+	ui.wallpaper_modal=dialog
+	# Reuse the existing HUD theme; deep-duplicating live font/theme resources
+	# is unnecessary for this small overlay and can enter native resource code.
+	dialog.theme=ui.theme
+	dialog.z_index=200
+	dialog.mouse_filter=Control.MOUSE_FILTER_STOP
+	ui.root.add_child(dialog)
+	print("[crop-clear] overlay attached")
+	dialog.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var shade=ColorRect.new()
+	shade.color=Color(0,0,0,.32)
+	shade.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	dialog.add_child(shade)
+	shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var center=CenterContainer.new()
+	center.mouse_filter=Control.MOUSE_FILTER_IGNORE
+	dialog.add_child(center)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	var panel=PanelContainer.new()
+	panel.custom_minimum_size=Vector2(420,170)
+	panel.add_theme_stylebox_override("panel",MapEditorTheme.box(MapEditorTheme.PAPER,20,12))
+	center.add_child(panel)
+	var content=VBoxContainer.new()
+	content.add_theme_constant_override("separation",14)
+	panel.add_child(content)
+	var heading=Label.new()
+	heading.text="确认铲除作物"
+	heading.add_theme_font_size_override("font_size",18)
+	content.add_child(heading)
+	var message=Label.new()
+	message.text="%02d 号田的%s仍然存活。\n铲除后将清空本田作物，不会获得收获物。\n确定要铲除吗？" % [index+1,ContentCatalog.crops[target.crop].name]
+	content.add_child(message)
+	var buttons=HBoxContainer.new()
+	buttons.alignment=BoxContainer.ALIGNMENT_END
+	buttons.add_theme_constant_override("separation",10)
+	content.add_child(buttons)
+	var cancel=Button.new()
+	cancel.text="取消"
+	buttons.add_child(cancel)
+	cancel.pressed.connect(dialog.queue_free)
 	var apply_action=func(harvest_only: bool):
 		# Keep the original plot identity: selection/project changes must never
 		# redirect a pending confirmation to another plant, even of the same species.
@@ -449,14 +488,17 @@ func _request_clear_crop() -> void:
 			after_change()
 			ui.toast("已收获。" if harvest_only else "已铲除，田块可以重新播种。")
 		dialog.queue_free()
-	dialog.confirmed.connect(func(): apply_action.call(false))
-	dialog.canceled.connect(dialog.queue_free)
-	dialog.close_requested.connect(dialog.queue_free)
 	if state.harvestable(target):
-		dialog.add_button("收获",false,"harvest")
-		dialog.custom_action.connect(func(action: StringName):
-			if action==&"harvest": apply_action.call(true))
-	dialog.popup_centered(Vector2i(420,170))
+		var harvest=Button.new()
+		harvest.text="收获"
+		buttons.add_child(harvest)
+		harvest.pressed.connect(func(): apply_action.call(true))
+	var confirm=Button.new()
+	confirm.text="确认铲除"
+	buttons.add_child(confirm)
+	confirm.pressed.connect(func(): apply_action.call(false))
+	print("[crop-clear] confirmation ready")
+
 
 func change_setting(key: String, value: Variant) -> void:
 	var now=Time.get_unix_time_from_system()
@@ -500,6 +542,8 @@ func _remember_camera() -> void:
 	pass
 
 func _collapse_panels() -> void:
+	if is_instance_valid(clear_crop_dialog):
+		clear_crop_dialog.queue_free()
 	selected=-1
 	tool="inspect"
 	scene.select_plot(-1)

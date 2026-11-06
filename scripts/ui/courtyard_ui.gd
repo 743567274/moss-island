@@ -30,6 +30,7 @@ var hud_unlocked=false
 var hud_controls={}
 var hud_drag_key=""
 var hud_drag_offset=Vector2.ZERO
+var wallpaper_modal: Control
 var wallpaper_hover: BaseButton
 
 # Store positions as fractions of the available viewport so changing resolution
@@ -102,8 +103,9 @@ func _input(event: InputEvent) -> void:
 
 func set_wallpaper_pointer(point: Vector2) -> void:
 	var target: BaseButton=null
-	if normal.is_visible_in_tree():
-		for node in normal.find_children("*","BaseButton",true,false):
+	var surface: Control=wallpaper_modal if is_instance_valid(wallpaper_modal) and wallpaper_modal.is_visible_in_tree() else normal
+	if surface.is_visible_in_tree():
+		for node in surface.find_children("*","BaseButton",true,false):
 			if node.is_visible_in_tree() and not node.disabled and node.get_global_rect().has_point(point):
 				target=node
 	if is_instance_valid(wallpaper_hover) and wallpaper_hover!=target and wallpaper_hover.is_hovered():
