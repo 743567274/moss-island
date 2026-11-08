@@ -170,4 +170,4 @@ cd moss-island
 早期用于本地参考、未确认再分发许可的 `assets/reference/` 不属于公开源码提交范围。天气 API 有独立的服务使用条款，项目代码的 GPL 许可不会改变外部服务的条款。
 
 ## 友情链接
-![linuxDo](https://linux.do/)
+[linuxDo](https://linux.do/)
